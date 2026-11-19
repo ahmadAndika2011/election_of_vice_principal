@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#143c5a">
+  <title>Pilih Wakil Bidang Kurikulum | SMP Negeri 287 Jakarta</title>
+  <style>
+    :root { --ink:#15364d; --muted:#536878; --blue:#1269a5; --navy:#143c5a; --line:#dce5eb; --paper:#fbfcfd; --wash:#eaf2f7; }
+    *, *::before, *::after { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:"Segoe UI",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; text-decoration:none; }
+    button, input { font:inherit; }
+    img, svg { display:block; max-width:100%; }
+    button, a, label { -webkit-tap-highlight-color:transparent; }
+    [hidden] { display:none !important; }
+    :focus-visible { outline:3px solid #b76a0a; outline-offset:5px; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); border:0; }
+    .container { width:min(1160px, calc(100% - 64px)); margin-inline:auto; }
+    .skip-link { position:absolute; top:-100px; left:20px; z-index:5; padding:12px 18px; background:white; border:2px solid var(--blue); }
+    .skip-link:focus { top:16px; }
+    .icon { width:19px; height:19px; flex-shrink:0; }
+    .button { display:inline-flex; align-items:center; justify-content:center; gap:12px; min-height:49px; padding:13px 21px; border:1px solid transparent; border-radius:5px; font-size:14px; font-weight:650; line-height:1.5; cursor:pointer; transition:background .18s ease; }
+    .button-primary { color:white; background:var(--blue); }
+    .button-primary:hover:not(:disabled) { background:#0c527f; }
+    .button-secondary { background:white; color:var(--ink); border-color:#c9d7e0; }
+    .button-secondary:hover:not(:disabled) { background:var(--wash); }
+    .button:disabled { cursor:not-allowed; opacity:.5; }
+    .site-header { background:white; border-bottom:1px solid var(--line); }
+    .navigation { display:flex; align-items:center; justify-content:space-between; gap:24px; min-height:96px; }
+    .brand { display:flex; align-items:center; gap:13px; }
+    .brand-mark { display:grid; place-items:center; width:45px; flex-shrink:0; }
+    .brand-mark img { width:45px; height:52px; object-fit:contain; }
+    .logo-fallback { display:grid; place-items:center; width:45px; height:49px; border:1px solid var(--blue); border-radius:4px 4px 15px 15px; color:var(--blue); font-size:18px; }
+    .brand-name { margin:0; font-size:13px; font-weight:750; letter-spacing:.055em; }
+    .brand-city { margin:4px 0 0; color:var(--muted); font-size:12px; }
+    .nav-links { display:flex; align-items:center; gap:28px; font-size:13px; }
+    .nav-links a { padding-block:12px; color:var(--muted); }
+    .nav-links a:hover { color:var(--blue); }
+    .nav-current { padding:9px 13px; border:1px solid #d5e3ec; border-radius:4px; background:var(--wash); color:var(--blue); font-weight:650; }
+    main { min-height:65vh; padding-block:35px 70px; }
+    .back-link { display:inline-flex; align-items:center; gap:9px; padding-block:9px; color:var(--muted); font-size:12px; }
+    .back-link:hover { color:var(--blue); text-decoration:underline; text-underline-offset:4px; }
+    .back-link .icon { width:16px; height:16px; }
+    .page-intro { padding-block:29px 35px; margin-bottom:34px; border-bottom:1px solid var(--line); }
+    .eyebrow { margin:0 0 16px; color:var(--blue); font-size:10px; line-height:1.7; font-weight:750; letter-spacing:.15em; text-transform:uppercase; }
+    h1 { margin:0; font-size:clamp(35px,4vw,52px); line-height:1.12; font-weight:650; letter-spacing:-.045em; }
+    .intro-description { max-width:650px; margin:20px 0 0; color:var(--muted); font-size:15px; line-height:1.85; }
+    .voting-layout { display:grid; grid-template-columns:minmax(0,1fr) 290px; align-items:start; gap:32px; }
+    .candidate-fieldset { min-width:0; margin:0; padding:0; border:0; }
+    .candidate-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:23px; }
+    .candidate-grid[data-count="1"] { grid-template-columns:minmax(0,380px); }
+    .candidate-option { display:block; min-width:0; overflow:hidden; background:white; border:1px solid #cedce5; border-radius:6px; cursor:pointer; transition:border-color .18s ease, box-shadow .18s ease; }
+    .candidate-option:hover { border-color:#7daccb; }
+    .candidate-option.selected { border-color:var(--blue); box-shadow:0 0 0 2px var(--blue); }
+    .candidate-option:focus-within { outline:3px solid #b76a0a; outline-offset:5px; }
+    .candidate-option input:focus-visible { outline:none; }
+    .candidate-image { width:100%; aspect-ratio:4/5; height:auto; object-fit:cover; object-position:center top; background:#edf2f5; }
+    .photo-fallback { display:grid; place-items:center; width:100%; aspect-ratio:4/5; padding:24px; background:#edf2f5; color:var(--muted); font-size:13px; text-align:center; }
+    .candidate-name { display:block; padding:22px 22px 0; font-size:18px; font-weight:650; line-height:1.5; overflow-wrap:anywhere; }
+    .candidate-school { display:block; padding:7px 22px 0; color:var(--muted); font-size:12px; line-height:1.7; }
+    .candidate-vision { display:block; padding:16px 22px 0; color:var(--muted); font-size:13px; line-height:1.8; white-space:pre-line; overflow-wrap:anywhere; }
+    .choice-row { display:flex; align-items:center; gap:10px; margin-top:21px; padding:16px 22px; border-top:1px solid var(--line); font-size:13px; }
+    .choice-row input { width:18px; height:18px; margin:0; accent-color:var(--blue); flex-shrink:0; }
+    .choice-text { font-weight:600; }
+    .selected .choice-row { background:#edf5fb; color:var(--blue); }
+    .selection-panel { position:sticky; top:25px; padding:26px; border:1px solid var(--line); border-top:3px solid var(--navy); border-radius:5px; background:white; }
+    .panel-label { margin:0; color:var(--muted); font-size:12px; }
+    .selected-name { margin:13px 0 0; font-size:21px; font-weight:650; line-height:1.5; letter-spacing:-.02em; overflow-wrap:anywhere; }
+    .selection-help { margin:17px 0 22px; padding-bottom:23px; border-bottom:1px solid var(--line); color:var(--muted); font-size:13px; line-height:1.85; }
+    .selection-panel .button { width:100%; }
+    .selection-note { margin:13px 0 0; color:var(--muted); font-size:11px; line-height:1.8; }
+    .feedback { margin:20px 0 0; padding:14px 16px; border-left:3px solid #ae6829; background:#fff5e9; color:#79451d; font-size:13px; line-height:1.85; overflow-wrap:anywhere; }
+    .data-state { padding:40px 24px; border:1px solid var(--line); border-radius:6px; background:white; text-align:center; }
+    .data-state p { margin:0; color:var(--muted); font-size:14px; line-height:1.85; }
+    .data-state .button { margin-top:18px; }
+    .loading-indicator { width:22px; height:22px; margin:0 auto 16px; border:2px solid #c9dae6; border-top-color:var(--blue); border-radius:50%; animation:spin .8s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .confirmation-dialog { width:min(470px,calc(100% - 32px)); max-height:calc(100dvh - 48px); padding:32px; border:1px solid var(--line); border-radius:8px; color:var(--ink); background:white; overflow-y:auto; }
+    .confirmation-dialog::backdrop { background:rgb(13 35 52 / 60%); }
+    .confirmation-dialog h2 { margin:0; font-size:27px; font-weight:650; letter-spacing:-.03em; }
+    .confirmation-dialog .dialog-description { margin:16px 0 0; font-size:14px; color:var(--muted); line-height:1.85; }
+    .confirmation-name { margin:22px 0; padding:18px; border:1px solid #d5e3ec; border-radius:4px; background:var(--wash); font-size:19px; font-weight:650; line-height:1.5; overflow-wrap:anywhere; }
+    .dialog-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:25px; }
+    .posting-message { margin:20px 0 0; color:var(--muted); font-size:13px; line-height:1.8; }
+    .success-panel { max-width:650px; margin:45px auto 20px; padding:40px; border:1px solid var(--line); border-top:4px solid var(--blue); border-radius:6px; background:white; text-align:center; }
+    .success-icon { display:grid; place-items:center; width:58px; height:58px; margin:0 auto 24px; border:1px solid #b8d3e6; border-radius:50%; background:var(--wash); color:var(--blue); }
+    .success-icon svg { width:27px; height:27px; }
+    .success-panel h2 { margin:0; font-size:31px; font-weight:650; letter-spacing:-.035em; }
+    .success-panel p { margin:18px 0 0; color:var(--muted); font-size:14px; line-height:1.85; }
+    .success-panel strong { display:block; margin-top:12px; color:var(--ink); font-size:20px; overflow-wrap:anywhere; }
+    .success-panel .button { margin-top:27px; }
+    .site-footer { border-top:1px solid var(--line); }
+    .footer-top { display:flex; justify-content:space-between; gap:32px; padding-block:32px 27px; }
+    .footer-school { margin:0; font-size:14px; font-weight:700; }
+    .footer-description { margin:9px 0 0; color:var(--muted); font-size:12px; line-height:1.8; }
+    .footer-credits { display:flex; gap:40px; }
+    .credit-label { margin:0 0 9px; color:var(--muted); font-size:11px; }
+    .footer-link { font-size:12px; font-weight:600; overflow-wrap:anywhere; }
+    .footer-link:hover { color:var(--blue); text-decoration:underline; text-underline-offset:4px; }
+    .footer-bottom { margin:0; padding-block:17px 23px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; line-height:1.8; }
+    @media (max-width:960px) {
+      .voting-layout { grid-template-columns:minmax(0,1fr) 250px; gap:23px; }
+      .candidate-grid { gap:17px; }
+      .candidate-name { font-size:16px; padding-inline:17px; }
+      .candidate-school, .candidate-vision, .choice-row { padding-inline:17px; }
+      .selection-panel { padding:22px; }
+      .footer-credits { gap:24px; }
+    }
+    @media (max-width:760px) {
+      .container { width:calc(100% - 40px); }
+      .navigation { min-height:80px; gap:16px; }
+      .brand { gap:9px; }
+      .brand-name { font-size:11px; letter-spacing:.025em; }
+      .brand-city { font-size:11px; }
+      .brand-mark, .brand-mark img { width:35px; }
+      .brand-mark img { height:43px; }
+      .logo-fallback { width:35px; height:40px; font-size:15px; }
+      .nav-links { font-size:11px; }
+      .nav-links > a { display:none; }
+      .nav-current { padding:8px 10px; }
+      main { padding-block:22px 45px; }
+      .page-intro { padding-block:25px 28px; margin-bottom:27px; }
+      .intro-description { font-size:14px; }
+      .voting-layout { grid-template-columns:1fr; gap:28px; }
+      .candidate-grid[data-count="1"] { grid-template-columns:1fr; max-width:400px; }
+      .selection-panel { position:static; }
+      .selected-name { font-size:22px; }
+      .footer-top { display:block; }
+      .footer-credits { margin-top:25px; gap:28px; flex-wrap:wrap; }
+      .success-panel { margin-top:30px; padding:30px 22px; }
+    }
+    @media (max-width:460px) {
+      .container { width:calc(100% - 32px); }
+      .candidate-grid { grid-template-columns:1fr; gap:22px; }
+      .candidate-image, .photo-fallback { aspect-ratio:4/4.5; }
+      .candidate-name { font-size:19px; }
+      .confirmation-dialog { padding:25px; }
+      .dialog-actions { flex-direction:column-reverse; }
+      .dialog-actions .button { width:100%; }
+    }
+    @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
+  
+    .auth-nav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .auth-username { max-width:210px; overflow-wrap:anywhere; font-size:13px; color:var(--ink); }
+    .auth-nav .auth-link { display:inline-flex; padding:8px 12px; min-height:40px; font-size:13px; border:1px solid var(--line); border-radius:5px; background:white; color:var(--ink); }
+    @media(max-width:760px) {
+      .navigation { flex-wrap:wrap; padding-block:14px; }
+      .nav-links { flex-wrap:wrap; gap:12px; justify-content:flex-end; }
+      .auth-nav { justify-content:flex-end; }
+      .auth-username { max-width:170px; }
+    }
+  
+    :root {--ink:#192f3b;--navy:#173847;--blue:#155864;--blue-hover:#0c444f;--muted:#4d6068;--line:#cdd6d4;--wash:#eaf1ee;--paper:#fafaf6}
+    body {background:var(--paper);color:var(--ink);font-family:system-ui,sans-serif}
+    .container {width:min(1080px,calc(100% - 48px))}
+    h1,h2,.candidate-caption h3,.candidate-name,.selected-name {font-family:Georgia,"Times New Roman",serif;font-weight:500}
+    h1,h2 {text-wrap:balance}
+    .site-header {border-top:4px solid var(--navy);background:var(--paper)}
+    .navigation {min-height:80px;flex-wrap:wrap;align-items:center;padding-block:10px;gap:12px 32px}
+    .brand-name {letter-spacing:.035em}
+    .nav-links,.auth-nav {display:flex;align-items:center;flex-wrap:wrap;gap:4px 14px;min-width:0}
+    .nav-links {flex:1;justify-content:flex-end}
+    .nav-links>a,.nav-links>strong {display:inline-flex;align-items:center;min-height:44px;color:var(--ink);font-size:14px;font-weight:550;padding:8px 5px;border:0;border-radius:0;background:transparent}
+    .nav-links [aria-current=page] {box-shadow:inset 0 -2px var(--blue);color:var(--blue)}
+    .auth-nav {justify-content:flex-end;gap:6px;max-width:100%}
+    .auth-nav:empty {display:none}
+    .auth-username {font-size:13px;overflow-wrap:anywhere}
+    .auth-nav .auth-link {background:transparent;border:1px solid #a5b7b4;border-radius:4px;min-height:44px;padding:9px 14px}
+    .button {border-radius:4px;min-height:46px}
+    .button-primary,.button-primary:hover:not(:disabled) {color:white}
+    :focus-visible {outline:3px solid #99630c;outline-offset:3px}
+    .footer-top {align-items:flex-start}
+    .footer-link {display:inline-flex;align-items:center;min-height:44px}
+    @media(max-width:760px) {
+      .container {width:calc(100% - 32px)}
+      .navigation {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 10px;padding:12px 0 0}
+      .brand {grid-column:1;grid-row:1}
+      .navigation>.auth-nav {grid-column:2;grid-row:1;justify-self:end}
+      .auth-username {max-width:13ch}
+      .nav-links {grid-column:1/-1;grid-row:2;width:100%;justify-content:flex-start;gap:4px 18px;border-top:1px solid var(--line)}
+      .nav-links>a,.nav-links>strong {padding-inline:0;display:inline-flex}
+      .brand-mark,.brand-mark img {width:32px}
+      .brand-name {font-size:12px}
+      .footer-credits {display:flex;flex-wrap:wrap;gap:12px 25px}
+    }
+    @media(max-width:370px) {
+      .auth-nav .auth-link {padding-inline:8px}
+      .auth-username {max-width:8ch}
+      .nav-links {column-gap:12px}
+    }
+
+    .page-intro {margin:0 0 18px;padding:8px 0 22px}
+    #page-title,.ranking-title {font:500 clamp(36px,5vw,60px)/1.08 Georgia,serif;letter-spacing:-.045em}
+    #auth-status {font-size:14px;color:var(--muted);overflow-wrap:anywhere;margin:15px 0 20px}
+    .candidate-option {border:1px solid #bac7c4;border-radius:4px}
+    .candidate-name {font-size:24px;line-height:1.22}
+    .candidate-image,.photo-fallback {aspect-ratio:1/1}
+    .selection-panel {border-radius:4px;background:#f0f3ef;border-top:3px solid var(--blue)}
+    .confirmation-dialog {border-radius:6px}
+    .confirmation-name {font:500 23px/1.35 Georgia,serif}
+    @media(max-width:680px) {
+      .voting-layout {display:block}
+      .candidate-grid,.candidate-grid[data-count="1"] {grid-template-columns:1fr;max-width:none}
+      .candidate-option {display:grid;grid-template-columns:78px minmax(0,1fr);column-gap:14px;align-content:start;padding:14px 14px 0}
+      .candidate-image,.candidate-option>.photo-fallback {grid-column:1;grid-row:1/4;width:78px;height:98px;min-width:0;object-fit:cover;border-radius:2px}
+      .candidate-option>.photo-fallback {padding:4px;font-size:10px}
+      .candidate-name,.candidate-school,.candidate-vision {grid-column:2;padding:0}
+      .candidate-name {font-size:21px}
+      .candidate-school,.candidate-vision {margin-top:5px}
+      .choice-row {grid-column:1/-1;min-height:46px;margin:12px -14px 0;padding:10px 14px}
+      .selection-panel {margin-top:20px;padding:18px}
+      .dialog-actions .button {min-height:48px}
+    }
+
+  </style>
+  <noscript><style>#data-state, #selection-panel { display:none; }</style></noscript>
+</head>
+<body>
+  <a class="skip-link" href="#konten">Lewati ke konten utama</a>
+  <header class="site-header">
+    <nav class="navigation container" aria-label="Navigasi utama">
+      <a class="brand" href="/" aria-label="SMP Negeri 287 Jakarta — Beranda">
+        <div class="brand-mark">
+          <img id="school-logo" src="/assets/logo/logo_smpn_287.png" alt="" width="45" height="52">
+          <strong class="logo-fallback" id="logo-fallback" aria-hidden="true" hidden>287</strong>
+        </div>
+        <div>
+          <p class="brand-name">SMP NEGERI 287</p>
+          <p class="brand-city">Jakarta</p>
+        </div>
+      </a>
+      <div class="nav-links"><a href="/">Beranda</a><a href="/pilih-wakil-kepala-sekolah" aria-current="page">Pemilihan</a><a href="/peringkat-kandidat">Peringkat</a></div>
+      <div class="auth-nav" data-auth-nav aria-label="Akun pengguna" aria-live="polite"></div>
+    </nav>
+  </header>
+
+  <main class="container" id="konten">
+    
+    <section class="page-intro" id="page-intro" aria-labelledby="page-title">
+      
+      <h1 id="page-title">Pilih calon</h1>
+      <p class="intro-description">Pilih calon Wakil Bidang Kurikulum SMP Negeri 287 Jakarta yang Anda percaya. Periksa kembali pilihan Anda sebelum mengirimkan suara.</p>
+    </section>
+
+    <p id="auth-status" role="status">Memeriksa status login…</p>
+    <form id="vote-form" hidden>
+      <div class="voting-layout">
+        <fieldset class="candidate-fieldset" id="calon">
+          <legend class="sr-only">Pilih satu calon Wakil Bidang Kurikulum</legend>
+          <div class="data-state" id="data-state">
+            <div class="loading-indicator" id="loading-indicator" aria-hidden="true"></div>
+            <p id="data-message" role="status" aria-live="polite" aria-atomic="true">Memuat daftar calon…</p>
+            <button class="button button-secondary" id="retry-button" type="button" hidden>Coba lagi</button>
+          </div>
+          <div class="candidate-grid" id="candidate-grid" aria-busy="true"></div>
+          <noscript><p>Aktifkan JavaScript untuk menampilkan calon dan mengirimkan pilihan.</p></noscript>
+        </fieldset>
+
+        <aside class="selection-panel" id="selection-panel" aria-labelledby="selection-label">
+          <p class="panel-label" id="selection-label">Pilihan Anda</p>
+          <p class="selected-name" id="selected-name" role="status" aria-live="polite" aria-atomic="true">Belum ada calon dipilih</p>
+          <p class="selection-help">Pilih satu calon, lalu lanjutkan untuk memeriksa dan mengonfirmasi pilihan Anda.</p>
+          <button class="button button-primary" id="continue-button" type="submit" disabled>
+            Lanjutkan
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          </button>
+          <p class="selection-note">Pilihan dikirim setelah Anda menekan Kirim pilihan pada konfirmasi.</p>
+          <p class="feedback" id="submit-feedback" role="alert" tabindex="-1" hidden></p>
+        </aside>
+      </div>
+    </form>
+
+    <section class="success-panel" id="success-panel" aria-labelledby="success-title" tabindex="-1" hidden>
+      <div class="success-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      
+      <h2 id="success-title">Pilihan Anda berhasil dikirim.</h2>
+      <p>Calon yang Anda pilih:</p>
+      <strong id="success-name"></strong>
+      <p>Suara Anda telah tercatat.</p>
+      <a class="button button-primary" href="/peringkat-kandidat">Lihat peringkat kandidat</a>
+      <p><a href="/">Kembali ke beranda</a></p>
+    </section>
+  </main>
+
+  <dialog class="confirmation-dialog" id="confirmation-dialog" aria-labelledby="confirmation-title" aria-describedby="confirmation-description">
+    
+    <h2 id="confirmation-title">Konfirmasi pilihan</h2>
+    <p class="dialog-description" id="confirmation-description">Anda akan mengirimkan pilihan untuk calon berikut:</p>
+    <p class="confirmation-name" id="confirmation-name"></p>
+    <p class="dialog-description">Jika ingin mengganti calon, tekan Kembali. Jika sudah sesuai, tekan Kirim pilihan.</p>
+    <div class="dialog-actions">
+      <button class="button button-secondary" id="cancel-button" type="button" autofocus>Kembali</button>
+      <button class="button button-primary" id="confirm-button" type="button">Kirim pilihan</button>
+    </div>
+    <p class="posting-message" id="posting-message" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <p class="footer-school">SMP Negeri 287 Jakarta</p>
+          <p class="footer-description">Pemilihan Wakil Bidang Kurikulum</p>
+        </div>
+        <div class="footer-credits">
+          <div>
+            <p class="credit-label">Dibuat oleh</p>
+            <a class="footer-link" href="https://instagram.com/search_for_andika" target="_blank" rel="noopener noreferrer">@search_for_andika</a>
+          </div>
+          <div>
+            <p class="credit-label">Instagram sekolah</p>
+            <a class="footer-link" href="https://www.instagram.com/smpnegeri287jakarta" target="_blank" rel="noopener noreferrer">@smpnegeri287jakarta</a>
+          </div>
+        </div>
+      </div>
+      <p class="footer-bottom">© <time id="current-year">2026</time> SMP Negeri 287 Jakarta.</p>
+    </div>
+  </footer>
+
+  <script src="/auth/client.js"></script>
+  <script>
+    (() => {
+      "use strict";
+      const DATA_URL = "/api/data";
+      const CHOOSE_URL = "/api/choose-candidate";
+      const IMAGE_BASE = "/assets/images/";
+      let currentAuth = null;
+
+      const get = id => document.getElementById(id);
+      const form = get("vote-form");
+      const grid = get("candidate-grid");
+      const state = get("data-state");
+      const dataMessage = get("data-message");
+      const loader = get("loading-indicator");
+      const retryButton = get("retry-button");
+      const continueButton = get("continue-button");
+      const dialog = get("confirmation-dialog");
+      const confirmButton = get("confirm-button");
+      const cancelButton = get("cancel-button");
+      const postingMessage = get("posting-message");
+      const feedback = get("submit-feedback");
+      let selectedCandidate = null;
+      let submitting = false;
+      let submissionLocked = false;
+      let options = [];
+
+      const year = String(new Date().getFullYear());
+      get("current-year").textContent = year;
+      get("current-year").dateTime = year;
+      const logo = get("school-logo");
+      function showLogoFallback() {
+        logo.hidden = true;
+        get("logo-fallback").hidden = false;
+      }
+      logo.addEventListener("error", showLogoFallback);
+      if (logo.complete && !logo.naturalWidth) showLogoFallback();
+
+      function resolvePhoto(value) {
+        // photos mendukung string atau array berisi URL/nama file foto.
+        const raw = Array.isArray(value) ? value.find(item => typeof item === "string" && item.trim()) : value;
+        if (typeof raw !== "string" || !raw.trim()) return null;
+        let path = raw.trim().replace(/\\/g, "/");
+        if (path.startsWith("app/assets/")) path = path.slice(3);
+        if (path.startsWith("assets/")) path = "/" + path;
+        if (!path.includes("/") && !path.includes(":")) path = IMAGE_BASE + encodeURIComponent(path);
+        try {
+          const url = new URL(path, window.location.origin + "/");
+          return ["http:", "https:"].includes(url.protocol) ? url.href : null;
+        } catch { return null; }
+      }
+
+      function updateSelection(candidate, selectedInput) {
+        if (submitting || submissionLocked) return;
+        selectedCandidate = candidate;
+        get("selected-name").textContent = candidate.name;
+        continueButton.disabled = false;
+        feedback.hidden = true;
+        for (const option of options) {
+          const checked = option.input === selectedInput;
+          option.input.checked = checked;
+          option.card.classList.toggle("selected", checked);
+          option.caption.textContent = checked ? "Dipilih" : "Pilih calon";
+        }
+      }
+
+      function createCandidate(candidate, index) {
+        const card = document.createElement("label");
+        card.className = "candidate-option";
+        const image = document.createElement("img");
+        image.className = "candidate-image";
+        image.alt = "Foto " + candidate.name;
+        image.width = 480;
+        image.height = 600;
+        image.loading = "lazy";
+        image.decoding = "async";
+        const fallback = document.createElement("small");
+        fallback.className = "photo-fallback";
+        fallback.textContent = "Foto belum tersedia";
+        fallback.hidden = true;
+        function showPhotoFallback() { image.hidden = true; fallback.hidden = false; }
+        image.addEventListener("error", showPhotoFallback, { once:true });
+        // Field foto API adalah photos, bukan image.
+        const imageUrl = resolvePhoto(candidate.photos);
+        if (imageUrl) image.src = imageUrl;
+        else showPhotoFallback();
+        card.append(image, fallback);
+
+        const title = document.createElement("strong");
+        title.className = "candidate-name";
+        title.id = "candidate-name-" + index;
+        title.textContent = candidate.name;
+        const school = document.createElement("small");
+        school.className = "candidate-school";
+        school.textContent = "Calon Wakil Bidang Kurikulum";
+        card.append(title, school);
+
+        const visionText = Array.isArray(candidate.vision)
+          ? candidate.vision.filter(item => typeof item === "string").join("\n")
+          : candidate.vision;
+        if (typeof visionText === "string" && visionText.trim()) {
+          const vision = document.createElement("small");
+          vision.className = "candidate-vision";
+          vision.textContent = visionText;
+          card.append(vision);
+        }
+
+        const row = document.createElement("small");
+        row.className = "choice-row";
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "candidate_choice";
+        input.value = String(index);
+        input.required = true;
+        input.setAttribute("aria-labelledby", title.id);
+        const caption = document.createElement("b");
+        caption.className = "choice-text";
+        caption.textContent = "Pilih calon";
+        input.addEventListener("change", () => {
+          if (input.checked) updateSelection(candidate, input);
+        });
+        row.append(input, caption);
+        card.append(row);
+        options.push({ card, input, caption });
+        return card;
+      }
+
+      async function loadCandidates() {
+        if (submitting || submissionLocked) return;
+        selectedCandidate = null;
+        options = [];
+        continueButton.disabled = true;
+        get("selected-name").textContent = "Belum ada calon dipilih";
+        grid.replaceChildren();
+        grid.setAttribute("aria-busy", "true");
+        state.classList.remove("sr-only");
+        loader.hidden = false;
+        retryButton.hidden = true;
+        dataMessage.textContent = "Memuat daftar calon…";
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 12000);
+        try {
+          const response = await fetch(DATA_URL, {
+            headers:{ Accept:"application/json" },
+            credentials:"same-origin",
+            signal:controller.signal
+          });
+          if (!response.ok) throw new Error("Daftar calon belum dapat dimuat. Silakan coba lagi.");
+          const payload = await response.json();
+          const records = Array.isArray(payload) ? payload : payload?.data;
+          if (!Array.isArray(records)) throw new Error("Format daftar calon belum sesuai. Silakan hubungi panitia.");
+          // Nama dari API dipakai persis sebagai name_candidate saat POST.
+          const candidates = records.map(record => {
+            const name = record?.name ?? record?.nama;
+            if (typeof name !== "string" || !name.trim()) {
+              throw new Error("Data nama calon belum lengkap. Silakan hubungi panitia.");
+            }
+            return { name, photos:record.photos, vision:record.vision };
+          });
+          if (candidates.length === 0) {
+            dataMessage.textContent = "Daftar calon belum tersedia. Silakan periksa kembali nanti.";
+            return;
+          }
+          const fragment = document.createDocumentFragment();
+          candidates.forEach((candidate, index) => fragment.append(createCandidate(candidate, index)));
+          grid.dataset.count = String(candidates.length);
+          grid.append(fragment);
+          dataMessage.textContent = candidates.length + " calon berhasil dimuat. Silakan pilih satu calon.";
+          state.classList.add("sr-only");
+        } catch (error) {
+          dataMessage.textContent = error.name === "AbortError"
+            ? "Waktu pemuatan habis. Silakan coba lagi."
+            : error instanceof TypeError || error instanceof SyntaxError
+              ? "Daftar calon belum dapat dibaca. Silakan coba lagi."
+              : error.message;
+          retryButton.hidden = false;
+        } finally {
+          clearTimeout(timeout);
+          loader.hidden = true;
+          grid.setAttribute("aria-busy", "false");
+        }
+      }
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        if (!selectedCandidate || submitting || submissionLocked || dialog.open) return;
+        get("confirmation-name").textContent = selectedCandidate.name;
+        postingMessage.hidden = true;
+        dialog.showModal();
+      });
+      cancelButton.addEventListener("click", () => { if (!submitting) dialog.close(); });
+      dialog.addEventListener("cancel", event => { if (submitting) event.preventDefault(); });
+      retryButton.addEventListener("click", loadCandidates);
+
+      async function readErrorMessage(response) {
+        try {
+          const body = await response.json();
+          const message = body?.detail ?? body?.message ?? body?.error;
+          if (typeof message === "string" && message.trim()) return message;
+          // Mendukung pesan validasi FastAPI (detail berupa array).
+          if (Array.isArray(message)) {
+            return message.map(item => typeof item?.msg === "string" ? item.msg : "").filter(Boolean).join("; ");
+          }
+        } catch { /* Respons error boleh tidak memiliki body JSON. */ }
+        return "Pilihan belum diterima (HTTP " + response.status + "). Silakan periksa kembali atau hubungi panitia.";
+      }
+
+      function showAlreadyVoted(candidateName) {
+        submissionLocked = true;
+        form.hidden = true;
+        get("page-intro").hidden = true;
+        get("auth-status").textContent = "Suara Anda sudah tercatat. Setiap akun hanya boleh memilih satu kali.";
+        get("success-title").textContent = "Anda sudah memilih.";
+        get("success-name").textContent = candidateName || "";
+        get("success-name").hidden = !candidateName;
+        get("success-name").previousElementSibling.hidden = !candidateName;
+        get("success-panel").hidden = false;
+        get("success-panel").focus();
+      }
+
+      async function submitVote() {
+        // Mencegah klik ganda selama permintaan berlangsung dan sesudah berhasil.
+        if (!selectedCandidate || !dialog.open || submitting || submissionLocked) return;
+        const candidate = selectedCandidate;
+        submitting = true;
+        confirmButton.disabled = true;
+        cancelButton.disabled = true;
+        continueButton.disabled = true;
+        options.forEach(option => { option.input.disabled = true; });
+        confirmButton.textContent = "Mengirim…";
+        postingMessage.textContent = "Pilihan sedang dikirim. Mohon tunggu.";
+        postingMessage.hidden = false;
+        feedback.hidden = true;
+        const waitingNotice = setTimeout(() => {
+          postingMessage.textContent = "Masih menunggu hasil pengiriman. Mohon jangan tutup halaman ini.";
+        }, 20000);
+
+        try {
+          const response = await fetch(CHOOSE_URL, {
+            method:"POST",
+            headers:{ "Content-Type":"application/json", Accept:"application/json", "X-CSRF-Token":currentAuth.csrf_token },
+            credentials:"same-origin",
+            redirect:"error",
+            body:JSON.stringify({
+              name_candidate:candidate.name,
+              voter_name:currentAuth.user.username
+            })
+          });
+          if (response.status === 409) {
+            dialog.close();
+            showAlreadyVoted(null);
+            return;
+          }
+          if (!response.ok) {
+            // Server/network errors can occur after a write; do not auto-repeat a vote.
+            if (response.status >= 500 || response.status === 408) throw new Error("uncertain");
+            feedback.textContent = await readErrorMessage(response);
+            feedback.hidden = false;
+            dialog.close();
+            return;
+          }
+          // Semua respons 2xx, termasuk 204 tanpa body, dianggap berhasil dikirim.
+          submissionLocked = true;
+          dialog.close();
+          form.hidden = true;
+          get("page-intro").hidden = true;
+          get("success-name").textContent = candidate.name;
+          get("success-panel").hidden = false;
+          get("success-panel").focus();
+        } catch {
+          submissionLocked = true;
+          dialog.close();
+          feedback.textContent = "Status pengiriman belum dapat dipastikan. Hubungi panitia untuk memeriksa apakah pilihan sudah diterima sebelum mencoba mengirim ulang.";
+          feedback.hidden = false;
+        } finally {
+          clearTimeout(waitingNotice);
+          submitting = false;
+          confirmButton.textContent = "Kirim pilihan";
+          confirmButton.disabled = submissionLocked;
+          cancelButton.disabled = false;
+          continueButton.disabled = submissionLocked || !selectedCandidate;
+          options.forEach(option => { option.input.disabled = submissionLocked; });
+          if (!feedback.hidden) feedback.focus();
+        }
+      }
+
+      confirmButton.addEventListener("click", submitVote);
+      window.authReady.then(async auth => {
+        if (!auth.authenticated) {
+          window.location.replace("/auth/login");
+          return;
+        }
+        if (!auth.profile_complete) {
+          window.location.replace("/auth/complete-profile");
+          return;
+        }
+        currentAuth = auth;
+        get("auth-status").textContent = "Memilih sebagai: " + auth.user.username;
+        const response = await fetch("/api/vote-status", {
+          credentials:"same-origin", cache:"no-store",
+          headers:{Accept:"application/json"}, signal:AbortSignal.timeout(12000)
+        });
+        if (response.status === 401) { window.location.replace("/auth/login"); return; }
+        if (response.status === 403) { window.location.replace("/auth/complete-profile"); return; }
+        if (!response.ok) throw new Error("Status voting belum dapat diperiksa.");
+        const status = await response.json();
+        if (status.has_voted) {
+          showAlreadyVoted(status.name_candidate);
+          return;
+        }
+        form.hidden = false;
+        loadCandidates();
+      }).catch(() => {
+        get("auth-status").textContent = "Status login atau voting belum dapat diperiksa. Periksa koneksi lalu muat ulang halaman.";
+      });
+    })();
+  </script>
+</body>
+</html>

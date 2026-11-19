@@ -1,0 +1,27 @@
+[project]
+name = "election-of-vice-principal"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "AhmadAndika2011", email = "ahmad.andika.training1.0@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "authlib>=1.9.9",
+    "email-validator>=2.4.0",
+    "fastapi>=0.165.0",
+    "httpx>=0.28.1",
+    "itsdangerous>=2.2.0",
+    "jinja2>=3.1.6",
+    "pymongo>=4.20.0",
+    "python-dotenv>=1.2.4",
+    "uvicorn>=0.54.0",
+]
+
+[project.scripts]
+election-of-vice-principal = "election_of_vice_principal:main"
+
+[build-system]
+requires = ["uv_build>=0.12.23,<0.13.0"]
+build-backend = "uv_build"

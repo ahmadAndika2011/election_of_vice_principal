@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lengkapi profil | Pemilihan Wakil Kepala Sekolah</title>
+<style>
+* { box-sizing:border-box; } body { margin:0; color:#15364d; background:#fbfcfd; font-family:"Segoe UI",Arial,sans-serif; }
+header { background:white; border-bottom:1px solid #dce5eb; padding:24px max(20px,calc((100% - 1100px)/2)); }
+header a { color:#15364d; text-decoration:none; font-weight:700; }
+main { width:min(490px,calc(100% - 32px)); margin:60px auto; background:white; padding:32px; border:1px solid #dce5eb; border-top:4px solid #1269a5; border-radius:6px; }
+h1 { font-size:30px; margin:0 0 18px; } p { font-size:14px; line-height:1.8; color:#536878; }
+a { color:#1269a5; } .button { display:inline-flex; justify-content:center; align-items:center; width:100%; min-height:48px; padding:12px 18px; color:white; background:#1269a5; border:0; border-radius:5px; font:600 14px "Segoe UI",Arial,sans-serif; text-decoration:none; cursor:pointer; }
+button:disabled { opacity:.5; cursor:wait; } input { width:100%; font:inherit; padding:12px; border:1px solid #afc4d2; border-radius:4px; margin-top:10px; }
+label { display:block; margin:22px 0 8px; } .warning { padding:12px; background:#fff5e9; border-left:3px solid #ae6829; color:#79451d; }
+.error { color:#a32323; } [hidden] { display:none !important; } :focus-visible { outline:3px solid #b76a0a; outline-offset:4px; }
+
+    body {color:#192f3b;background:#fafaf6;font-family:system-ui,sans-serif}
+    header {border-top:4px solid #173847;min-height:74px;display:flex;align-items:center;background:#fafaf6}
+    header a {font-size:14px;letter-spacing:.035em;color:#173847}
+    main {width:min(460px,calc(100% - 36px));margin:clamp(32px,9vh,88px) auto;padding:28px 0;background:transparent;border:0;border-top:2px solid #173847;border-radius:0}
+    h1 {font:500 clamp(34px,6vw,48px)/1.1 Georgia,serif;letter-spacing:-.04em}
+    p {font-size:16px;line-height:1.65;color:#465a63;overflow-wrap:anywhere}
+    .button {margin:6px 0;min-height:50px;background:#155864;border-radius:4px}
+    .button:hover {background:#0c444f}
+    main a:not(.button) {display:inline-flex;align-items:center;min-height:44px;color:#155864;text-underline-offset:4px}
+    input {min-height:50px;font-size:16px;margin:2px 0 14px}
+    .warning {background:transparent;padding:0;border:0;font-size:14px;color:#495d64}
+    #email {overflow-wrap:anywhere}
+    .error {color:#a32323}
+    main>p:last-child {margin-bottom:0;border-top:1px solid #cdd6d4;padding-top:6px}
+
+  </style></head><body><header><a href="/">SMP NEGERI 287 JAKARTA</a></header><main><h1>Lengkapi profil</h1><p id="email" role="status">Memeriksa akun Google…</p>
+<p id="name-help" class="warning">Gunakan nama lengkap Anda sebagai username.</p>
+<form id="profile-form" hidden><label for="username">Username (nama lengkap)</label>
+<input id="username" name="username" autocomplete="name" minlength="1" maxlength="200" aria-describedby="name-help" required>
+<p id="error" class="error" role="alert" hidden></p><button class="button" id="save" type="submit">Simpan dan masuk</button></form>
+<p><a href="/">Kembali ke beranda</a></p></main>
+<script src="/auth/client.js"></script><script>
+let authState;
+const form = document.getElementById("profile-form");
+const error = document.getElementById("error");
+const save = document.getElementById("save");
+window.authReady.then(auth => {
+  if (!auth.authenticated) { location.replace("/auth/login"); return; }
+  if (auth.profile_complete) { location.replace("/"); return; }
+  authState = auth;
+  document.getElementById("email").textContent = "Akun Google: " + auth.user.email;
+  form.hidden = false;
+  document.getElementById("username").focus();
+}).catch(() => {
+  document.getElementById("email").textContent = "Status akun belum dapat diperiksa. Muat ulang halaman untuk mencoba lagi.";
+});
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!authState || save.disabled) return;
+  save.disabled = true;
+  error.hidden = true;
+  try {
+    const response = await fetch("/api/auth/complete-profile", {
+      method:"POST", credentials:"same-origin",
+      headers:{"Content-Type":"application/json", "X-CSRF-Token":authState.csrf_token},
+      body:JSON.stringify({username:document.getElementById("username").value})
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      if (response.status === 401) { location.replace("/auth/login"); return; }
+      const detail = Array.isArray(data.detail) ? data.detail.map(item => item.msg).join("; ") : data.detail;
+      throw new Error(detail || "Profil belum berhasil disimpan.");
+    }
+    location.assign("/");
+  } catch (problem) {
+    error.textContent = problem instanceof TypeError ? "Koneksi bermasalah. Periksa koneksi dan coba lagi." : problem.message;
+    error.hidden = false;
+  } finally { save.disabled = false; }
+});
+</script></body></html>
