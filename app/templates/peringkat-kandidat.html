@@ -281,6 +281,10 @@
   </div>
   <p class="ranking-note">Kandidat dengan jumlah suara yang sama berbagi peringkat.</p>
   <a class="button button-primary" href="/pilih-wakil-kepala-sekolah">Ke halaman pemilihan</a>
+  <div id="vote-admin" hidden>
+    <button type="button" class="button button-secondary" id="delete-votes">Hapus semua suara</button>
+    <p role="status" id="delete-status"></p>
+  </div>
   <noscript><p>Aktifkan JavaScript untuk memuat peringkat kandidat.</p></noscript>
 </main>
 <footer class="site-footer">
@@ -371,6 +375,40 @@
       get("ranking-wrap").setAttribute("aria-busy", "false");
     }
   }
+  async function setupVoteAdmin() {
+    const session = await window.authReady;
+    if (!session?.authenticated) return;
+    const permission = await fetch("/api/voting/izin-hapus", {cache: "no-store"});
+    if (!permission.ok || !(await permission.json()).allowed) return;
+    const remove = get("delete-votes");
+    get("vote-admin").hidden = false;
+    remove.addEventListener("click", async () => {
+      if (!window.confirm("Hapus seluruh suara? Semua pemilih bisa memilih lagi. Penghapusan ini permanen.")) return;
+      remove.disabled = true;
+      const message = get("delete-status");
+      message.textContent = "Sedang menghapus suara…";
+      try {
+        const response = await fetch("/api/voting", {
+          method: "DELETE", credentials: "same-origin",
+          headers: {"X-CSRF-Token": session.csrf_token}
+        });
+        if (!response.ok) {
+          message.textContent = response.status === 401 || response.status === 403
+            ? "Izin ditolak. Muat ulang halaman untuk memeriksa sesi login."
+            : "Server gagal memproses permintaan. Perbarui peringkat untuk memeriksa hasilnya.";
+          return;
+        }
+        const result = await response.json();
+        window.alert(number.format(result.deleted_count) + " suara dihapus.");
+        window.location.reload();
+      } catch {
+        message.textContent = "Hasil penghapusan belum diketahui. Periksa koneksi dan perbarui peringkat.";
+      } finally {
+        remove.disabled = false;
+      }
+    });
+  }
+  setupVoteAdmin().catch(() => {});
   button.addEventListener("click", refresh);
   refresh();
 })();
